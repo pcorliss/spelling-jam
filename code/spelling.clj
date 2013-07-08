@@ -2,34 +2,34 @@
 
 (println "hello world")
 
-(def file_read (fn [] (slurp "data/big.txt")))
+(defn file_read [] (slurp "data/big.txt"))
 
 (def alphabet (seq "abcdefghijklmnopqrstuvwxyz"))
 
 (def nwords (frequencies (re-seq #"\w+" (.toLowerCase (file_read)))))
 
-(def word_split 
-  (fn [word] 
-    (for 
+(defn word_split 
+  [word] 
+  (for 
       [i (range (inc (.length word)))] 
       [
        (subs word 0 i), 
        (subs word i (.length word))
       ]
-)))
+))
 
-(def deletes 
-  (fn [word]
-    (for [pair (word_split word)]
+(defn deletes 
+  [word]
+  (for [pair (word_split word)]
       (let [ a (first pair)
              b (second pair) ]
-      (str (first pair) 
+      (str a
            (if (not (empty? b)) 
-            (.substring b 1)))))))
+            (subs b 1))))))
 
-(def replaces
-  (fn [word]
-    (for [pair (word_split word)]
+(defn replaces
+  [word]
+  (for [pair (word_split word)]
       (let [ a (first pair)
        b (second pair) ]
 
@@ -37,29 +37,30 @@
         (str a
              (if (not (empty? b)) 
               (str alpha
-                (.substring b 1)))))))))
+                (subs b 1))))))))
 
-(def inserts
-  (fn [word]
-    (for [pair (word_split word)]
+(defn inserts
+  [word]
+  (for [pair (word_split word)]
       (let [ a (first pair)
        b (second pair) ]
       (for [alpha alphabet]
         (str a
             alpha
-            b))))))
+            b)))))
 
-(def transposes
-  (fn [word]
-    (for [pair (word_split word)]
+(defn transposes 
+  "This is a new line and some doc"
+  [word]
+  (for [pair (word_split word)]
       (let [ a (first pair)
              b (second pair) ]
         (str a
              (if (> (.length b) 1)
                 (str (second b) (first b) 
                      (if (> (.length b) 2)
-                       (.substring b 2))))
-)))))
+                       (subs b 2))))
+))))
 
 (def edits1 
   (fn [word] 
