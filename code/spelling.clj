@@ -20,7 +20,7 @@
 
 (defn deletes 
   [word]
-  (for [pair (word_split word)]
+  (for [pair word]
       (let [ a (first pair)
              b (second pair) ]
       (str a
@@ -29,30 +29,32 @@
 
 (defn replaces
   [word]
-  (for [pair (word_split word)]
-      (let [ a (first pair)
-       b (second pair) ]
+  (flatten 
+    (for [pair word]
+        (let [ a (first pair)
+         b (second pair) ]
 
-      (for [alpha alphabet]
-        (str a
-             (if (not (empty? b)) 
-              (str alpha
-                (subs b 1))))))))
+        (for [alpha alphabet]
+          (str a
+               (if (not (empty? b)) 
+                (str alpha
+                  (subs b 1)))))))))
 
 (defn inserts
   [word]
-  (for [pair (word_split word)]
-      (let [ a (first pair)
-       b (second pair) ]
-      (for [alpha alphabet]
-        (str a
-            alpha
-            b)))))
+  (flatten
+    (for [pair word]
+        (let [ a (first pair)
+         b (second pair) ]
+        (for [alpha alphabet]
+          (str a
+              alpha
+              b))))))
 
 (defn transposes 
   "This is a new line and some doc"
   [word]
-  (for [pair (word_split word)]
+  (for [pair word]
       (let [ a (first pair)
              b (second pair) ]
         (str a
@@ -62,9 +64,16 @@
                        (subs b 2))))
 ))))
 
-(def edits1 
-  (fn [word] 
-    ()))
+(defn edits1
+  [word]
+  (let [ splits (word_split word) ]
+    (set 
+    (concat
+      (deletes splits)
+      (replaces splits)
+      (transposes splits)
+      (inserts splits)
+))))
 
 (def known (fn [words] (filter #(contains? nwords %) words)))
 
@@ -80,3 +89,5 @@
 (println "Box:" (correct "box"))
 (println "Love:" (correct "love"))
 (println "fizzbuzz:" (correct "fizzbuzz"))
+
+(println "Hammer: " (edits1 "hammer"))
