@@ -21,36 +21,45 @@
 (def deletes 
   (fn [word]
     (for [pair (word_split word)]
+      (let [ a (first pair)
+             b (second pair) ]
       (str (first pair) 
-           (if (not (empty? (second pair))) 
-            (.substring (second pair) 1))))))
+           (if (not (empty? b)) 
+            (.substring b 1)))))))
 
 (def replaces
   (fn [word]
     (for [pair (word_split word)]
+      (let [ a (first pair)
+       b (second pair) ]
+
       (for [alpha alphabet]
-        (str (first pair)
-             (if (not (empty? (second pair))) 
+        (str a
+             (if (not (empty? b)) 
               (str alpha
-                (.substring (second pair) 1))))))))
+                (.substring b 1)))))))))
 
 (def inserts
   (fn [word]
     (for [pair (word_split word)]
+      (let [ a (first pair)
+       b (second pair) ]
       (for [alpha alphabet]
-        (str (first pair)
-              alpha
-              (second pair))))))
+        (str a
+            alpha
+            b))))))
 
 (def transposes
   (fn [word]
     (for [pair (word_split word)]
-        (str (first pair)
-             (if (> (.length (second pair)) 1)
-                (str (second (second pair)) (first (second pair)) 
-                     (if (> (.length (second pair)) 2)
-                       (.substring (second pair) 2))))
-))))
+      (let [ a (first pair)
+             b (second pair) ]
+        (str a
+             (if (> (.length b) 1)
+                (str (second b) (first b) 
+                     (if (> (.length b) 2)
+                       (.substring b 2))))
+)))))
 
 (def edits1 
   (fn [word] 
