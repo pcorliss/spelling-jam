@@ -6,6 +6,18 @@
 
 (def nwords (frequencies (re-seq #"\w+" (.toLowerCase (file_read)))))
 
+(def word_split 
+  (fn [word] 
+    (for 
+      [i (range (inc (.length word)))] 
+      [
+       (subs word 0 i), 
+       (subs word i (.length word))
+      ]
+)))
+
+(def edits1 (fn [word] ()))
+
 (def known (fn [words] (filter #(contains? nwords %) words)))
 
 (def correct 
