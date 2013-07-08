@@ -42,6 +42,16 @@
               alpha
               (second pair))))))
 
+(def transposes
+  (fn [word]
+    (for [pair (word_split word)]
+        (str (first pair)
+             (if (> (.length (second pair)) 1)
+                (str (second (second pair)) (first (second pair)) 
+                     (if (> (.length (second pair)) 2)
+                       (.substring (second pair) 2))))
+))))
+
 (def edits1 
   (fn [word] 
     ()))
