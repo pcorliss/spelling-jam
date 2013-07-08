@@ -75,12 +75,18 @@
       (inserts splits)
 ))))
 
-(def known (fn [words] (filter #(contains? nwords %) words)))
-
-(def correct 
-  (fn [word] 
-    (not (empty? (known [word]))
+(defn known
+  [words]
+  (let [ matches (filter #(contains? nwords %) words) ]
+    (if (not (empty? matches))
+      matches
 )))
+
+(defn correct 
+  [word] 
+    (or (known [word])
+        (known (edits1 word))
+))
 
 ;(println nwords)
 
@@ -89,5 +95,9 @@
 (println "Box:" (correct "box"))
 (println "Love:" (correct "love"))
 (println "fizzbuzz:" (correct "fizzbuzz"))
+(println "hamer:" (correct "hamer"))
+(println "acount:" (correct "acount"))
+(println "beetween:" (correct "beetween"))
 
-(println "Hammer: " (edits1 "hammer"))
+
+;(println "Hammer: " (edits1 "hammer"))
