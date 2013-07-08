@@ -2,14 +2,21 @@
 
 (println "hello world")
 
-;(def words (fn [] (re-seq #"[a-z]+" (map .toLowerCase (slurp "data/big.txt")))))
-;
 (def file_read (fn [] (slurp "data/big.txt")))
-
-;(def words (fn [text] (re-seq #"[a-z]+" (.toLowerCase text))))
-
-;(def train (fn [features] ()))
 
 (def nwords (frequencies (re-seq #"\w+" (.toLowerCase (file_read)))))
 
-(println nwords)
+(def known (fn [words] (filter #(contains? nwords %) words)))
+
+(def correct 
+  (fn [word] 
+    (not(empty? (known [word]))
+)))
+
+;(println nwords)
+
+(println "Computer:" (correct "computer"))
+(println "Hammer:" (correct "hammer"))
+(println "Box:" (correct "box"))
+(println "Love:" (correct "love"))
+(println "fizzbuzz:" (correct "fizzbuzz"))
