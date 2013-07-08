@@ -2,7 +2,7 @@
 
 (defn file_read [] (slurp "data/big.txt"))
 
-(def alphabet (seq "abcdefghijklmnopqrstuvwxyz"))
+(def alphabet "abcdefghijklmnopqrstuvwxyz")
 
 (def nwords (frequencies (re-seq #"\w+" (.toLowerCase (file_read)))))
 
