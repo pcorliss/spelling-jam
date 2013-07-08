@@ -1,7 +1,5 @@
 #!/usr/bin/env java -cp /Users/pcorliss/git/clojure-koans/lib/clojure-1.3.0.jar clojure.main
 
-(println "hello world")
-
 (defn file_read [] (slurp "data/big.txt"))
 
 (def alphabet (seq "abcdefghijklmnopqrstuvwxyz"))
@@ -10,13 +8,14 @@
 
 (defn word_split 
   [word] 
-  (for 
-      [i (range (inc (.length word)))] 
-      [
-       (subs word 0 i), 
-       (subs word i (.length word))
-      ]
-))
+  (let [ length (.length word) ]
+    (for 
+        [i (range (inc length))] 
+        [
+         (subs word 0 i), 
+         (subs word i length)
+        ]
+)))
 
 (defn deletes 
   [word]
@@ -24,7 +23,7 @@
       (let [ a (first pair)
              b (second pair) ]
       (str a
-           (if (not (empty? b)) 
+           (if (not-empty b)
             (subs b 1))))))
 
 (defn replaces
@@ -36,7 +35,7 @@
 
         (for [alpha alphabet]
           (str a
-               (if (not (empty? b)) 
+               (if (not-empty b) 
                 (str alpha
                   (subs b 1)))))))))
 
@@ -77,10 +76,7 @@
 
 (defn known
   [words]
-  (let [ matches (filter #(contains? nwords %) words) ]
-    (if (not (empty? matches))
-      matches
-)))
+  (not-empty (filter #(contains? nwords %) words)))
 
 (defn correct 
   [word] 
