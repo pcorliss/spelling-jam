@@ -4,6 +4,8 @@
 
 (def file_read (fn [] (slurp "data/big.txt")))
 
+(def alphabet (seq "abcdefghijklmnopqrstuvwxyz"))
+
 (def nwords (frequencies (re-seq #"\w+" (.toLowerCase (file_read)))))
 
 (def word_split 
@@ -16,13 +18,39 @@
       ]
 )))
 
-(def edits1 (fn [word] ()))
+(def deletes 
+  (fn [word]
+    (for [pair (word_split word)]
+      (str (first pair) 
+           (if (not (empty? (second pair))) 
+            (.substring (second pair) 1))))))
+
+(def replaces
+  (fn [word]
+    (for [pair (word_split word)]
+      (for [alpha alphabet]
+        (str (first pair)
+             (if (not (empty? (second pair))) 
+              (str alpha
+                (.substring (second pair) 1))))))))
+
+(def inserts
+  (fn [word]
+    (for [pair (word_split word)]
+      (for [alpha alphabet]
+        (str (first pair)
+              alpha
+              (second pair))))))
+
+(def edits1 
+  (fn [word] 
+    ()))
 
 (def known (fn [words] (filter #(contains? nwords %) words)))
 
 (def correct 
   (fn [word] 
-    (not(empty? (known [word]))
+    (not (empty? (known [word]))
 )))
 
 ;(println nwords)
