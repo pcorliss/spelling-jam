@@ -14,44 +14,39 @@
 
 (defn deletes
   [word]
-  (for [pair word]
-    (let [[a b] pair]
-      (str a
-           (if (not-empty b)
-             (subs b 1))))))
+  (for [[a b] word]
+    (str a
+         (if (not-empty b)
+           (subs b 1)))))
 
 (defn replaces
   [word]
   (flatten
-   (for [pair word]
-     (let [[a b] pair]
-
-       (for [alpha alphabet]
-         (str a
-              (if (not-empty b)
-                (str alpha
-                     (subs b 1)))))))))
+   (for [[a b] word]
+     (for [alpha alphabet]
+       (str a
+            (if (not-empty b)
+              (str alpha
+                   (subs b 1))))))))
 
 (defn inserts
   [word]
   (flatten
-   (for [pair word]
-     (let [[a b] pair]
-       (for [alpha alphabet]
-         (str a
-              alpha
-              b))))))
+   (for [[a b] word]
+     (for [alpha alphabet]
+       (str a
+            alpha
+            b)))))
 
 (defn transposes
   "This is a new line and some doc"
   [word]
-  (for [pair word]
-    (let [[a b] pair]
-      (str a
-           (if (> (count b) 1)
-             (str (second b) (first b)
-                  (if (> (count b) 2)
-                    (subs b 2))))))))
+  (for [[a b] word]
+    (str a
+         (if (> (count b) 1)
+           (str (second b) (first b)
+                (if (> (count b) 2)
+                  (subs b 2)))))))
 
 (defn edits1
   [word]
