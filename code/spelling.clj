@@ -8,45 +8,40 @@
 
 (defn word_split
   [word]
-  (let [ length (.length word) ]
-    (for
-        [i (range (inc length))]
-        [
-         (subs word 0 i),
-         (subs word i length)
-        ]
-)))
+  (let [length (.length word)]
+    (for [i (range (inc length))]
+        [(subs word 0 i) (subs word i length)])))
 
 (defn deletes
   [word]
   (for [pair word]
-      (let [ a (first pair)
-             b (second pair) ]
+    (let [a (first pair)
+          b (second pair)]
       (str a
            (if (not-empty b)
-            (subs b 1))))))
+             (subs b 1))))))
 
 (defn replaces
   [word]
   (flatten
-    (for [pair word]
-        (let [ a (first pair)
-         b (second pair) ]
+   (for [pair word]
+     (let [a (first pair)
+           b (second pair)]
 
-        (for [alpha alphabet]
-          (str a
-               (if (not-empty b)
+       (for [alpha alphabet]
+         (str a
+              (if (not-empty b)
                 (str alpha
-                  (subs b 1)))))))))
+                     (subs b 1)))))))))
 
 (defn inserts
   [word]
   (flatten
-    (for [pair word]
-        (let [ a (first pair)
-         b (second pair) ]
-        (for [alpha alphabet]
-          (str a
+   (for [pair word]
+     (let [a (first pair)
+           b (second pair)]
+       (for [alpha alphabet]
+         (str a
               alpha
               b))))))
 
@@ -54,25 +49,23 @@
   "This is a new line and some doc"
   [word]
   (for [pair word]
-      (let [ a (first pair)
-             b (second pair) ]
-        (str a
-             (if (> (.length b) 1)
-                (str (second b) (first b)
-                     (if (> (.length b) 2)
-                       (subs b 2))))
-))))
+    (let [a (first pair)
+          b (second pair)]
+      (str a
+           (if (> (.length b) 1)
+             (str (second b) (first b)
+                  (if (> (.length b) 2)
+                    (subs b 2))))))))
 
 (defn edits1
   [word]
-  (let [ splits (word_split word) ]
+  (let [splits (word_split word)]
     (set
-    (concat
+     (concat
       (deletes splits)
       (replaces splits)
       (transposes splits)
-      (inserts splits)
-))))
+      (inserts splits)))))
 
 (defn known
   [words]
@@ -80,9 +73,8 @@
 
 (defn correct
   [word]
-    (or (known [word])
-        (known (edits1 word))
-))
+  (or (known [word])
+      (known (edits1 word))))
 
 ;(println nwords)
 
