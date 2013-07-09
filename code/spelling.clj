@@ -8,7 +8,7 @@
 
 (defn word-split
   [word]
-  (let [length (.length word)]
+  (let [length (count word)]
     (for [i (range (inc length))]
         [(subs word 0 i) (subs word i length)])))
 
@@ -52,9 +52,9 @@
     (let [a (first pair)
           b (second pair)]
       (str a
-           (if (> (.length b) 1)
+           (if (> (count b) 1)
              (str (second b) (first b)
-                  (if (> (.length b) 2)
+                  (if (> (count b) 2)
                     (subs b 2))))))))
 
 (defn edits1
