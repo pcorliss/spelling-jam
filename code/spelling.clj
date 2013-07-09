@@ -1,88 +1,69 @@
 #!/usr/bin/env java -cp /Users/pcorliss/git/clojure-koans/lib/clojure-1.3.0.jar clojure.main
 
-(defn file_read [] (slurp "data/big.txt"))
+(defn file-read [] (slurp "data/big.txt"))
 
-(def alphabet (seq "abcdefghijklmnopqrstuvwxyz"))
+(def alphabet "abcdefghijklmnopqrstuvwxyz")
 
-(def nwords (frequencies (re-seq #"\w+" (.toLowerCase (file_read)))))
+(def nwords (frequencies (re-seq #"\w+" (.toLowerCase (file-read)))))
 
-(defn word_split 
-  [word] 
-  (let [ length (.length word) ]
-    (for 
-        [i (range (inc length))] 
-        [
-         (subs word 0 i), 
-         (subs word i length)
-        ]
-)))
-
-(defn deletes 
+(defn word-split
   [word]
-  (for [pair word]
-      (let [ a (first pair)
-             b (second pair) ]
-      (str a
-           (if (not-empty b)
-            (subs b 1))))))
+  (let [length (count word)]
+    (for [i (range (inc length))]
+        [(subs word 0 i) (subs word i length)])))
+
+(defn deletes
+  [word]
+  (for [[a b] word]
+    (str a
+         (if (not-empty b)
+           (subs b 1)))))
 
 (defn replaces
   [word]
-  (flatten 
-    (for [pair word]
-        (let [ a (first pair)
-         b (second pair) ]
-
-        (for [alpha alphabet]
-          (str a
-               (if (not-empty b) 
-                (str alpha
-                  (subs b 1)))))))))
+  (for [[a b] word
+        alpha alphabet]
+    (str a
+         (if (not-empty b)
+           (str alpha
+                (subs b 1))))))
 
 (defn inserts
   [word]
-  (flatten
-    (for [pair word]
-        (let [ a (first pair)
-         b (second pair) ]
-        (for [alpha alphabet]
-          (str a
-              alpha
-              b))))))
+  (for [[a b] word
+        alpha alphabet]
+    (str a
+         alpha
+         b)))
 
-(defn transposes 
+(defn transposes
   "This is a new line and some doc"
   [word]
-  (for [pair word]
-      (let [ a (first pair)
-             b (second pair) ]
-        (str a
-             (if (> (.length b) 1)
-                (str (second b) (first b) 
-                     (if (> (.length b) 2)
-                       (subs b 2))))
-))))
+  (for [[a b] word]
+    (str a
+         (if (> (count b) 1)
+           (str (second b) (first b)
+                (if (> (count b) 2)
+                  (subs b 2)))))))
 
 (defn edits1
   [word]
-  (let [ splits (word_split word) ]
-    (set 
-    (concat
+  (let [splits (word-split word)]
+    (set
+     (concat
       (deletes splits)
       (replaces splits)
       (transposes splits)
-      (inserts splits)
-))))
+      (inserts splits)))))
 
 (defn known
   [words]
   (not-empty (filter #(contains? nwords %) words)))
 
-(defn correct 
-  [word] 
-    (or (known [word])
-        (known (edits1 word))
-))
+(defn correct
+  [word]
+  (or (known [word])
+      (known (edits1 word))))
 
 ;(println nwords)
 
