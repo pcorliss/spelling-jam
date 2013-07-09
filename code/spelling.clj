@@ -15,8 +15,7 @@
 (defn deletes
   [word]
   (for [pair word]
-    (let [a (first pair)
-          b (second pair)]
+    (let [[a b] pair]
       (str a
            (if (not-empty b)
              (subs b 1))))))
@@ -25,8 +24,7 @@
   [word]
   (flatten
    (for [pair word]
-     (let [a (first pair)
-           b (second pair)]
+     (let [[a b] pair]
 
        (for [alpha alphabet]
          (str a
@@ -38,8 +36,7 @@
   [word]
   (flatten
    (for [pair word]
-     (let [a (first pair)
-           b (second pair)]
+     (let [[a b] pair]
        (for [alpha alphabet]
          (str a
               alpha
@@ -49,8 +46,7 @@
   "This is a new line and some doc"
   [word]
   (for [pair word]
-    (let [a (first pair)
-          b (second pair)]
+    (let [[a b] pair]
       (str a
            (if (> (count b) 1)
              (str (second b) (first b)
