@@ -21,22 +21,20 @@
 
 (defn replaces
   [word]
-  (flatten
-   (for [[a b] word]
-     (for [alpha alphabet]
-       (str a
-            (if (not-empty b)
-              (str alpha
-                   (subs b 1))))))))
+  (for [[a b] word
+        alpha alphabet]
+    (str a
+         (if (not-empty b)
+           (str alpha
+                (subs b 1))))))
 
 (defn inserts
   [word]
-  (flatten
-   (for [[a b] word]
-     (for [alpha alphabet]
-       (str a
-            alpha
-            b)))))
+  (for [[a b] word
+        alpha alphabet]
+    (str a
+         alpha
+         b)))
 
 (defn transposes
   "This is a new line and some doc"
