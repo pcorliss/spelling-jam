@@ -1,12 +1,12 @@
 #!/usr/bin/env java -cp /Users/pcorliss/git/clojure-koans/lib/clojure-1.3.0.jar clojure.main
 
-(defn file_read [] (slurp "data/big.txt"))
+(defn file-read [] (slurp "data/big.txt"))
 
 (def alphabet "abcdefghijklmnopqrstuvwxyz")
 
-(def nwords (frequencies (re-seq #"\w+" (.toLowerCase (file_read)))))
+(def nwords (frequencies (re-seq #"\w+" (.toLowerCase (file-read)))))
 
-(defn word_split
+(defn word-split
   [word]
   (let [length (.length word)]
     (for [i (range (inc length))]
@@ -59,7 +59,7 @@
 
 (defn edits1
   [word]
-  (let [splits (word_split word)]
+  (let [splits (word-split word)]
     (set
      (concat
       (deletes splits)
